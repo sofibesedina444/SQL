@@ -7,6 +7,7 @@ public interface EmployeeDao {
     List<Employee> findAll();
     void addEmployee(Employee employee);
     Employee getEmployee(long id);
-    void updateAge(long id, int age);
-    void deleteEmployee(long id);
+    void updateAge(Employee employee);
+    void deleteEmployee(Employee employee);
+    public void addOrUpdateEmployee(Employee employee);
 }

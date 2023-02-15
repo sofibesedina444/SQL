@@ -9,20 +9,24 @@ public class Application {
         employeeDao.findAll().forEach(System.out::println);
         System.out.println();
 
-        City city_id = new City(5, "Москва");
-        Employee employee = new Employee("Carl", "Jung", "male", 85, city_id);
-        employeeDao.addEmployee(employee);
+        City city_id = new City(3, "Новгород");
+        Employee employee1 = new Employee(11,"Charles", "Darwin",
+                "male", 73, city_id.getCityId());
+        Employee employee2 = new Employee(11,"Charles", "Darwin",
+                "male", 70, city_id.getCityId());
+        employeeDao.addEmployee(employee1);
+        employeeDao.addOrUpdateEmployee(employee2);
         employeeDao.findAll().forEach(System.out::println);
         System.out.println();
 
-        employeeDao.deleteEmployee(9);
-        employeeDao.deleteEmployee(10);
+        employeeDao.deleteEmployee(employee1);
+        employeeDao.deleteEmployee(employee2);
         employeeDao.findAll().forEach(System.out::println);
         System.out.println();
 
         System.out.println(employeeDao.getEmployee(8));
 
-        employeeDao.updateAge(8, 75);
+        employeeDao.updateAge(employee2);
         employeeDao.findAll().forEach(System.out::println);
     }
 }

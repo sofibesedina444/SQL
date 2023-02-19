@@ -1,32 +1,43 @@
+import dao.CityDao;
 import dao.EmployeeDao;
+import dao.impl.CityDaoImpl;
 import dao.impl.EmployeeDaoImpl;
 import model.City;
 import model.Employee;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public class Application {
     public static void main(String[] args) {
         EmployeeDao employeeDao = new EmployeeDaoImpl();
+        CityDao cityDao = new CityDaoImpl();
+
+        int n = 2;
+        City vladivostok = new City("Владивосток");
+        List<Employee> employees = new ArrayList<>(2);
+        for (int i = 0; i < n; i++) {
+            employees.add(new Employee("name" + (i + 1), "last name" + (i + 1),
+                    "female", 25 + i, vladivostok));
+        }
+        vladivostok.setEmployees(employees);
+        cityDao.addCity(vladivostok);
         employeeDao.findAll().forEach(System.out::println);
-        System.out.println();
 
-        City city_id = new City(3, "Новгород");
-        Employee employee1 = new Employee(11,"Charles", "Darwin",
-                "male", 73, city_id.getCityId());
-        Employee employee2 = new Employee(11,"Charles", "Darwin",
-                "male", 70, city_id.getCityId());
-        employeeDao.addEmployee(employee1);
-        employeeDao.addOrUpdateEmployee(employee2);
+        City ekaterinburg = new City("Екатеринбург");
+        cityDao.addCity(ekaterinburg);
+
+        Optional<Employee> darwin = employeeDao.getEmployee(25);
+        darwin.get().setCity(ekaterinburg);
+        employeeDao.updateEmployee(darwin.get());
+
+        vladivostok.setCityName("Казань");
+        cityDao.updateCity(vladivostok);
         employeeDao.findAll().forEach(System.out::println);
-        System.out.println();
 
-        employeeDao.deleteEmployee(employee1);
-        employeeDao.deleteEmployee(employee2);
-        employeeDao.findAll().forEach(System.out::println);
-        System.out.println();
-
-        System.out.println(employeeDao.getEmployee(8));
-
-        employeeDao.updateAge(employee2);
+        Optional<City> kazan = cityDao.getCity(9);
+        cityDao.deleteCity(kazan.get());
         employeeDao.findAll().forEach(System.out::println);
     }
 }

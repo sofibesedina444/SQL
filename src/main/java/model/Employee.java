@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.*;
 import java.util.Objects;
+
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -9,33 +10,44 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false, length = 10)
     private String gender;
     @Column(name = "age")
     private int age;
-    @Column(name = "city_id")
-    private long cityId;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
     public Employee() {
     }
-    public Employee(String firstName, String lastName, String gender, int age, long cityId) {
+
+    public Employee(String firstName, String lastName, String gender, int age, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
+        this.city = city;
     }
 
-    public Employee(long id, String firstName, String lastName, String gender, int age, long cityId) {
+    public Employee(String firstName, String lastName, String gender, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    public Employee(long id, String firstName, String lastName, String gender, int age, City city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
+        this.city = city;
     }
 
     public long getId() {
@@ -78,12 +90,12 @@ public class Employee {
         this.age = age;
     }
 
-    public long getCityId() {
-        return cityId;
+    public City getCity() {
+        return city;
     }
 
-    public void setCityId(long cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override
@@ -93,12 +105,12 @@ public class Employee {
         Employee employee = (Employee) o;
         return id == employee.id && age == employee.age && Objects.equals(firstName, employee.firstName)
                 && Objects.equals(lastName, employee.lastName) && Objects.equals(gender, employee.gender)
-                && Objects.equals(cityId, employee.cityId);
+                && Objects.equals(city, employee.city);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, gender, age, cityId);
+        return Objects.hash(id, firstName, lastName, gender, age, city);
     }
 
     @Override
@@ -109,6 +121,6 @@ public class Employee {
                 ", last_name='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
-                ", city_id=" + cityId;
+                ", city_id=" + city;
     }
 }
